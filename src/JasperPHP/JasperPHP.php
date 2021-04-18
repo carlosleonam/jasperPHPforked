@@ -3,7 +3,7 @@ namespace JasperPHP;
 
 class JasperPHP
 {
-    protected $executable = "/../JasperStarter/bin/jasperstarter";
+    protected $executable = DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR ."JasperStarter".DIRECTORY_SEPARATOR ."bin".DIRECTORY_SEPARATOR ."jasperstarter";
     protected $the_command;
     protected $redirect_output;
     protected $background;
@@ -17,7 +17,7 @@ class JasperPHP
            $this->windows = true;
 
         if (!$resource_dir) {
-            $this->resource_directory = __DIR__ . "/../../../../../";
+            $this->resource_directory = __DIR__ . DIRECTORY_SEPARATOR ."..".DIRECTORY_SEPARATOR ."..".DIRECTORY_SEPARATOR ."..".DIRECTORY_SEPARATOR ."..".DIRECTORY_SEPARATOR ."..".DIRECTORY_SEPARATOR ;
         } else {
             if (!file_exists($resource_dir))
                 throw new \Exception("Invalid resource directory", 1);
@@ -183,7 +183,9 @@ class JasperPHP
         $output     = array();
         $return_var = 0;
 
-        exec($this->the_command, $output, $return_var);
+        $command = $this->the_command;
+        $command = str_replace('^','', $command);
+        exec($command, $output, $return_var);
 
         if( $return_var != 0 && isset($output[0]) )
             throw new \Exception($output[0], 1);
